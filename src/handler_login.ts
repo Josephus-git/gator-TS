@@ -1,12 +1,13 @@
 import { setUser } from "./config.js"
 import { exit } from "node:process";
 
-export function handlerLogin(cmdName: string, ...args: string[]) {
+
+export async function handlerLogin(cmdName: string, ...args: string[]) {
     if (args.length === 0) {
-        console.log("login handler expects a single argument, the username");
+        console.log(`usage: ${cmdName} <name>`);
         exit(1)
     }
-
-    setUser(args[0]);
-    console.log(`User ${args[0]} has been set successfully`)
+    const userName = args[0]
+    await setUser(userName);
+    console.log(`User ${userName} has been set successfully`)
 }

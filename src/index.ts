@@ -1,10 +1,13 @@
-import { registerCommand, CommandRegistry, runCommand } from "./commands.js";
+import { registerCommand, CommandRegistry, runCommand } from "./registry.js";
 import { handlerLogin } from "./handler_login.js";
 import { argv, exit } from "node:process";
+import { handlerCreateUser } from "./handler_register.js";
 
-function main() {
+
+async function main() {
     const newRegistry: CommandRegistry = {}
     registerCommand(newRegistry, "login", handlerLogin);
+    registerCommand(newRegistry, "register", handlerCreateUser)
     const cmd = argv.slice(2);
     if (cmd.length === 0) {
         console.log("usage: gator <command>")
@@ -13,11 +16,11 @@ function main() {
     const commandName = cmd[0];
     const args = cmd.slice(1);
     try {
-        runCommand(newRegistry, commandName, ...args)
+        await runCommand(newRegistry, commandName, ...args)
     } catch (error) {
         console.log(error)
     }
-    
+    exit(0)
 }
 
 main();

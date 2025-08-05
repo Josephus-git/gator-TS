@@ -1,6 +1,8 @@
 import fs from "fs";
 import os from "os";
 import path from "path";
+import { exit } from "process";
+import { getUser} from "./lib/db/queries/users.js"
 
 
 type Config = {
@@ -23,7 +25,12 @@ function writeConfig(cfg: Config): void {
     fs.writeFileSync(configPath, data);
 }
 
-export function setUser(username: string) {
+export async function setUser(username: string) {
+    const user = await getUser(username)
+    if (!user) {
+        console.log(`user ${username} does not exits`)
+        exit(1)
+    }
     const config = readConfig();
     config.currentUserName = username;
     writeConfig(config);
