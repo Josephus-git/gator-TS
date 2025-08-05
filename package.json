@@ -23,12 +23,13 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^24.1.0",
-    "drizzle-kit": "^0.31.4",
+    "drizzle-kit": "^0.18.1",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2"
   },
   "dependencies": {
     "drizzle-orm": "^0.44.4",
+    "fast-xml-parser": "^5.2.5",
     "postgres": "^3.4.7"
   }
 }
