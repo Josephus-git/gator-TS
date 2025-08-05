@@ -8,7 +8,7 @@ type Config = {
     dbUrl: string;
 }
 
-function getConfigFilePath(): string {
+export function getConfigFilePath(): string {
     return path.join(os.homedir(), ".gatorconfig.json");
 }
 
@@ -24,10 +24,8 @@ function writeConfig(cfg: Config): void {
 }
 
 export function setUser(username: string) {
-    const config: Config = {
-        currentUserName: username,
-        dbUrl: "postgres://example"
-    };
+    const config = readConfig();
+    config.currentUserName = username;
     writeConfig(config);
 }
 
