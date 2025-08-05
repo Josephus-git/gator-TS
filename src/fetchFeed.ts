@@ -1,4 +1,25 @@
 import { XMLParser } from 'fast-xml-parser';
+import { feeds, users } from "./lib/db/schema";
+import { InferSelectModel } from "drizzle-orm";
+
+type User = InferSelectModel<typeof users>;
+type Feed = InferSelectModel<typeof feeds>;
+
+export function printFeed(feed: Feed, user: User) {
+  console.log("--- FEED ---");
+  console.log(`Feed ID: ${feed.id}`);
+  console.log(`Feed Name: ${feed.name}`);
+  console.log(`Feed URL: ${feed.url}`);
+  console.log(`Created At: ${feed.createdAt}`);
+  console.log(`Updated At: ${feed.updatedAt}`);
+  console.log("--- USER ---");
+  console.log(`User ID: ${user.id}`);
+  console.log(`User Name: ${user.name}`);
+  console.log(`User Created At: ${user.createdAt}`);
+  console.log(`User Updated At: ${user.updatedAt}`);
+  console.log("------------");
+}
+
 
 type RSSFeed = {
   channel: {

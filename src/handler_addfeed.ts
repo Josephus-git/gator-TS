@@ -2,26 +2,8 @@ import { addFeed } from "./lib/db/queries/feeds";
 import { exit } from "node:process";
 import { readConfig } from "./config";
 import { getUser } from "./lib/db/queries/users";
-import { feeds, users } from "./lib/db/schema";
-import { InferSelectModel } from "drizzle-orm";
+import { printFeed } from "./fetchFeed"
 
-type User = InferSelectModel<typeof users>;
-type Feed = InferSelectModel<typeof feeds>;
-
-function printFeed(feed: Feed, user: User) {
-  console.log("--- FEED ---");
-  console.log(`Feed ID: ${feed.id}`);
-  console.log(`Feed Name: ${feed.name}`);
-  console.log(`Feed URL: ${feed.url}`);
-  console.log(`Created At: ${feed.createdAt}`);
-  console.log(`Updated At: ${feed.updatedAt}`);
-  console.log("--- USER ---");
-  console.log(`User ID: ${user.id}`);
-  console.log(`User Name: ${user.name}`);
-  console.log(`User Created At: ${user.createdAt}`);
-  console.log(`User Updated At: ${user.updatedAt}`);
-  console.log("------------");
-}
 
 export async function handlerCreateFeed(cmdName: string, ...args: string[]) {
     const cfg = readConfig()
