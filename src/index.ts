@@ -2,12 +2,16 @@ import { registerCommand, CommandRegistry, runCommand } from "./registry.js";
 import { handlerLogin } from "./handler_login.js";
 import { argv, exit } from "node:process";
 import { handlerCreateUser } from "./handler_register.js";
+import { handlerReset } from "./handler_reset.js";
 
 
 async function main() {
     const newRegistry: CommandRegistry = {}
     registerCommand(newRegistry, "login", handlerLogin);
     registerCommand(newRegistry, "register", handlerCreateUser)
+    registerCommand(newRegistry, "reset", handlerReset)
+
+
     const cmd = argv.slice(2);
     if (cmd.length === 0) {
         console.log("usage: gator <command>")
