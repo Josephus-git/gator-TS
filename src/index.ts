@@ -3,6 +3,7 @@ import { handlerLogin } from "./handler_login.js";
 import { argv, exit } from "node:process";
 import { handlerCreateUser } from "./handler_register.js";
 import { handlerReset } from "./handler_reset.js";
+import { handlerGetUsers } from "./handler_users.js";
 
 
 async function main() {
@@ -10,6 +11,7 @@ async function main() {
     registerCommand(newRegistry, "login", handlerLogin);
     registerCommand(newRegistry, "register", handlerCreateUser)
     registerCommand(newRegistry, "reset", handlerReset)
+    registerCommand(newRegistry, "users", handlerGetUsers)
 
 
     const cmd = argv.slice(2);
