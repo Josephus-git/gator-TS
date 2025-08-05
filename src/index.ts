@@ -5,6 +5,7 @@ import { handlerCreateUser } from "./handler_register.js";
 import { handlerReset } from "./handler_reset.js";
 import { handlerGetUsers } from "./handler_users.js";
 import { handlerAgg } from "./handler_agg.js";
+import { handlerCreateFeed } from "./handler_addfeed.js";
 
 
 async function main() {
@@ -14,6 +15,7 @@ async function main() {
     registerCommand(newRegistry, "reset", handlerReset);
     registerCommand(newRegistry, "users", handlerGetUsers);
     registerCommand(newRegistry, "agg", handlerAgg);
+    registerCommand(newRegistry, "addfeed", handlerCreateFeed);
 
 
     const cmd = argv.slice(2);

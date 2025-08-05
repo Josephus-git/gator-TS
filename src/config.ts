@@ -2,7 +2,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import { exit } from "process";
-import { getUser} from "./lib/db/queries/users.js"
+import { getUser} from "./lib/db/queries/users"
 
 
 type Config = {
