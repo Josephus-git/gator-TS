@@ -45,19 +45,27 @@ type RSSItem = {
  * @throws An error if the network request fails, the XML is invalid, or the feed structure is missing required fields.
  */
 export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
-  // 1. Fetch the feed data
-  const response = await fetch(feedURL, {
-    headers: {
-      'User-Agent': 'gator', // Identify our client
-    },
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30-second timeout
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch feed: ${response.status} ${response.statusText}`);
+  let response: Response;
+  try {
+    // 1. Fetch the feed data
+    response = await fetch(feedURL, {
+      headers: {
+        'User-Agent': 'gator', // Identify our client
+      },
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch feed: ${response.status} ${response.statusText}`);
+    }
+  } finally {
+    clearTimeout(timeoutId);
   }
 
   const xmlText = await response.text();
-
   // 2. Parse the XML
   const parser = new XMLParser();
   const parsedXml = parser.parse(xmlText);

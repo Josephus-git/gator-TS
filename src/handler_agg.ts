@@ -1,6 +1,7 @@
 import { fetchFeed } from "./fetchFeed";
 import { exit } from "node:process";
 import { getNextFeedToFetch, markFeedFetched } from "./lib/db/queries/feeds";
+import { createPost } from "./lib/db/queries/posts";
 
 
 async function scrapeFeeds() {
@@ -14,9 +15,33 @@ async function scrapeFeeds() {
 
   try {
     const rssFeed = await fetchFeed(nextFeed.url);
+    console.log(`Fetched ${rssFeed.channel.item.length} items from ${nextFeed.url}`);
     for (const item of rssFeed.channel.item) {
-      console.log(`- ${item.title}`);
-      // In a real application, you would save the post to your database here.
+      // some feeds don't have a title, so we skip them
+      if (!item.title) {
+        continue;
+      }
+      // some feeds don't have a url, so we skip them
+      if (!item.link) {
+        continue;
+      }
+      // some feeds don't have a published at, so we skip them
+      if (!item.pubDate) {
+        continue;
+      }
+      const pubDate = new Date(item.pubDate);
+      if (isNaN(pubDate.getTime())) {
+        console.error(`Could not parse date ${item.pubDate}`);
+        continue;
+      }
+
+      await createPost({
+        title: item.title,
+        url: item.link,
+        description: item.description || '',
+        publishedAt: pubDate,
+        feedId: nextFeed.id,
+      });
     }
     console.log(" ---- done ----\n")
   } catch (err) {
@@ -68,7 +93,7 @@ export async function handlerAgg(cmdName: string, ...args: string[]) {
 
   const handleError = (err: unknown) => console.error("Scraping loop error:", err);
 
-  scrapeFeeds().catch(handleError);
+  await scrapeFeeds().catch(handleError);
   const interval = setInterval(() => scrapeFeeds().catch(handleError), timeBetweenRequests);
 
   await new Promise<void>((resolve) => {
