@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
 import { db } from "..";
 import { feeds } from "../schema";
+import { eq } from "drizzle-orm";
 
 
 export async function addFeed(name: string, url: string, userId: string) {
@@ -10,5 +10,10 @@ export async function addFeed(name: string, url: string, userId: string) {
 
 export async function getFeeds() {
     const result = await db.select().from (feeds);
+    return result
+}
+
+export async function getFeedByUrl(url: string) {
+    const [result] = await db.select().from(feeds).where(eq(feeds.url, url))
     return result
 }

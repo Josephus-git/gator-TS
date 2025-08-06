@@ -15,6 +15,13 @@
       "when": 1754418406519,
       "tag": "0001_amused_lady_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754432155540,
+      "tag": "0002_curious_frog_thor",
+      "breakpoints": true
     }
   ]
 }
