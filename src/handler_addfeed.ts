@@ -1,15 +1,11 @@
 import { addFeed } from "./lib/db/queries/feeds";
 import { exit } from "node:process";
-import { readConfig } from "./config";
-import { getUser } from "./lib/db/queries/users";
 import { printFeed } from "./fetchFeed"
 import { createFeedFollow } from "./lib/db/queries/feed_follows";
+import { User } from "./middle_ware_login";
 
 
-export async function handlerCreateFeed(cmdName: string, ...args: string[]) {
-    const cfg = readConfig()
-    const user = await getUser(cfg.currentUserName)
-
+export async function handlerCreateFeed(cmdName: string, user: User, ...args: string[]) {
     if (args.length < 2 ) {
         console.log(`usage: ${cmdName} <feed name> <feedUrl>`)
         exit(1)

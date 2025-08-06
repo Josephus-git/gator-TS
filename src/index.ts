@@ -9,6 +9,7 @@ import { handlerCreateFeed } from "./handler_addfeed.js";
 import { handlerGetFeeds } from "./handler_feeds.js";
 import { handlerFollow } from "./handler_follow.js";
 import { handlerFollowing } from "./handler_following.js";
+import { middlewareLoggedIn } from "./middle_ware_login.js";
 
 
 async function main() {
@@ -18,10 +19,14 @@ async function main() {
     registerCommand(newRegistry, "reset", handlerReset);
     registerCommand(newRegistry, "users", handlerGetUsers);
     registerCommand(newRegistry, "agg", handlerAgg);
-    registerCommand(newRegistry, "addfeed", handlerCreateFeed);
+    registerCommand(
+        newRegistry, 
+        "addfeed", 
+        middlewareLoggedIn(handlerCreateFeed)
+    );
     registerCommand(newRegistry, "feeds", handlerGetFeeds);
-    registerCommand(newRegistry, "follow", handlerFollow);
-    registerCommand(newRegistry, "following", handlerFollowing)
+    registerCommand(newRegistry, "follow", middlewareLoggedIn(handlerFollow));
+    registerCommand(newRegistry, "following", middlewareLoggedIn(handlerFollowing));
 
 
     const cmd = argv.slice(2);

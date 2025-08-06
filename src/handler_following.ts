@@ -1,10 +1,7 @@
-import { readConfig } from "./config.js"
 import { getFeedFollowsForUser } from "./lib/db/queries/feed_follows"
-import { getUser } from "./lib/db/queries/users"
+import { User } from "./middle_ware_login";
 
-export async function handlerFollowing(cmdName: string) {
-    const userName = readConfig().currentUserName;
-    const user = await getUser(userName);
+export async function handlerFollowing(cmdName: string, user: User) {
     const feeds = await getFeedFollowsForUser(user.id);
     for (const feed of feeds) {
         console.log(`Feeds for user ${user.name}:`);
