@@ -15,7 +15,7 @@
  
  1.  Clone the repository to your local machine:
      ```bash
-     git clone <your-repository-url>
+     git clone https://github.com/Josephus-git/gator-TS.git
      cd gator-TS
      ```
  
